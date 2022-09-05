@@ -8,7 +8,7 @@ params = {
     'model': ['cnn'],
     'num_rounds': [200],
     'eval_every': [20],
-    'clients_per_round':  [35],
+    'clients_per_round':  [10],
     'num_tips':  [2],
     'sample_size':  [10],
     'reference_avg_top': [1], #[1,2,10,50,100]
