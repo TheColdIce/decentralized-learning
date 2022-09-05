@@ -1,0 +1,8 @@
+
+
+python3 main.py -dataset femnist -model cnn --num-rounds 200 --eval-every 20 --clients-per-round 35 --num-tips 2 --sample-size 10 --reference-avg-top 1 --target-accuracy 1.0 -lr 0.06 --poison-type NONE --poison-fraction 0.0 --poison-from 201
+
+
+python3 main.py -dataset femnist -model cnn --num-rounds 200 --eval-every 20 --clients-per-round 35 --num-tips 2 --sample-size 10 --reference-avg-top 1 --target-accuracy 1.0 -lr 0.06 --poison-type NONE --poison-fraction 0.0 --poison-from 201
+Round 0 
+{'accuracy': 0.012071011900975842, 'loss': 4.126383687757798, 'consensus_round': 0.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
