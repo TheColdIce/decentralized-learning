@@ -1,0 +1,5 @@
+tangle_data/
+viewer/tangle_*.jason
+data/
+__pycache__
+leaf/

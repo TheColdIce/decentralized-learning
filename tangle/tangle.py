@@ -1,5 +1,6 @@
 import json
 import os
+from pickle import NONE
 import random
 from multiprocessing import Pool, Process, current_process
 
@@ -15,6 +16,7 @@ class Tangle:
     def __init__(self, transactions, genesis):
         self.transactions = transactions
         self.genesis = genesis
+        self.new_transactions = {}
         if current_process().name == 'MainProcess':
             os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
             self.process_pool = Pool(10)
@@ -24,7 +26,7 @@ class Tangle:
 
     def run_nodes(self, train_fn, clients, rnd, num_epochs=1, batch_size=10, malicious_clients=None, poison_type=PoisonType.NONE):
         norm_this_round = []
-        new_transactions = []
+        #new_transactions = []
 
         sys_metrics = {
             c.id: {BYTES_WRITTEN_KEY: 0,
@@ -44,12 +46,31 @@ class Tangle:
             sys_metrics[client_id][LOCAL_COMPUTATIONS_KEY] = client_sys_metrics[LOCAL_COMPUTATIONS_KEY]
 
             tx.tag = rnd
-            new_transactions.append(tx)
-
-        for tx in new_transactions:
-            self.add_transaction(tx)
+            self.new_transactions[client_id] = [tx, metrics['loss']] # this is probs training loss, maybe nor what we want to compare in query?
+            
+        #for tx in new_transactions:
+        #    self.add_transaction(tx)
 
         return sys_metrics
+
+    def run_avalanche(self, eval_fn, clients_to_test, alpha=0.5, set_to_use='test'):
+        k = len(clients_to_test)
+        n_added_tx = 0
+        for u_id in self.new_transactions:
+            tx, u_loss = self.new_transactions[u_id]            
+            eval_params = [[client.id, client.group, client.model.flops, random.randint(0, 4294967295), client.train_data, client.eval_data, self.name, set_to_use, tx.load_weights()] for client in clients_to_test]
+            results = self.process_pool.starmap(eval_fn, eval_params) 
+            P = 0
+            for _, c_metrics in results:
+                c_loss = c_metrics['loss']
+                if u_loss >= c_loss:
+                    P += 1
+            if P >= alpha * k:
+                n_added_tx += 1
+                self.add_transaction(tx)
+     
+        self.new_transactions = {}
+        return n_added_tx
 
     def test_model(self, test_fn, clients_to_test, set_to_use='test'):
         metrics = {}
@@ -69,7 +90,7 @@ class Tangle:
             json.dump({'nodes': n, 'genesis': self.genesis, 'global_loss': global_loss, 'global_accuracy': global_accuracy, 'norm': norm}, outfile)
 
         self.name = tangle_name
-
+    
     @classmethod
     def fromfile(cls, tangle_name):
       with open(f'tangle_data/tangle_{tangle_name}.json', 'r') as tanglefile:

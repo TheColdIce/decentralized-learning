@@ -94,3 +94,21 @@ def test_single(u, g, flops, seed, train_data, eval_data, tangle_name, set_to_us
         metrics['norm'] = np.linalg.norm(partial_norms)
 
     return u, metrics
+
+def eval_model(u, g, flops, seed, train_data, eval_data, tangle_name, set_to_use, model_params):
+    # Suppress tf warnings
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+
+    random.seed(1 + seed)
+    np.random.seed(12 + seed)
+    tf.compat.v1.set_random_seed(123 + seed)
+
+    client = build_client(u, g, flops, train_data, eval_data)
+    
+    tangle = Tangle.fromfile(tangle_name)
+    node = Node(client, tangle)
+    args = parse_args()
+    
+    node.client.model.set_params(model_params)
+    metrics = node.client.test(set_to_use)
+    return u, metrics

@@ -21,7 +21,7 @@ from client import Client
 from server import Server
 from model import ServerModel
 
-from tangle import Tangle, Transaction, PoisonType, train_single, test_single
+from tangle import Tangle, Transaction, PoisonType, train_single, test_single, eval_model
 
 from utils.args import parse_args
 from utils.model_utils import read_data
@@ -133,6 +133,7 @@ def main():
         sys_metrics = tangle.run_nodes(train_single, server.selected_clients, i + 1,
                                        num_epochs=args.num_epochs, batch_size=args.batch_size,
                                        malicious_clients=malicious_clients, poison_type=poison_type)
+        n_added_tx = tangle.run_avalanche(eval_model, random_sample(clients, 10), set_to_use='test')
         # norm.append(np.array(norm_this_round).mean(axis=0).tolist() if len(norm_this_round) else [])
         sys_writer_fn(i + 1, c_ids, sys_metrics, c_groups, c_num_samples)
 
@@ -244,7 +245,6 @@ def print_stats(
         file.write('Round %d \n' % num_round)
         file.write(str(average_test_metrics) + '\n')
     return average_test_metrics
-
 
 
 def print_metrics(metrics, weights, num_round, prefix='', print_conf_matrix=False):
