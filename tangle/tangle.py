@@ -66,7 +66,7 @@ class Tangle:
             tx_results = self.process_pool.starmap(eval_fn, eval_params) 
             P = 0
             for (_, tx_metric), ref_metric in zip(tx_results, ref_metrics):
-                if tx_metric['loss'] <= epsilon * ref_metric['loss']:
+                if epsilon * tx_metric['loss'] <= ref_metric['loss']:
                     P += 1
             if P >= alpha * k:
                 self.add_transaction(tx)
