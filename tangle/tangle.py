@@ -53,7 +53,7 @@ class Tangle:
 
         return sys_metrics
 
-    def run_avalanche(self, eval_fn, test_fn, clients_to_test, alpha=0.5, set_to_use='test'):
+    def run_avalanche(self, eval_fn, test_fn, clients_to_test, alpha=0.5, epsilon=0.8, set_to_use='test'):
         k = len(clients_to_test)
         
         ref_results = self.test_model(test_fn, clients_to_test, set_to_use)
@@ -66,7 +66,7 @@ class Tangle:
             tx_results = self.process_pool.starmap(eval_fn, eval_params) 
             P = 0
             for (_, tx_metric), ref_metric in zip(tx_results, ref_metrics):
-                if tx_metric['loss'] <= ref_metric['loss']:
+                if tx_metric['loss'] <= epsilon * ref_metric['loss']:
                     P += 1
             if P >= alpha * k:
                 self.add_transaction(tx)
