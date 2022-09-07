@@ -16,7 +16,7 @@ class Tangle:
     def __init__(self, transactions, genesis):
         self.transactions = transactions
         self.genesis = genesis
-        self.new_transactions = {}
+        self.new_transactions = []
         if current_process().name == 'MainProcess':
             os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
             self.process_pool = Pool(10)
@@ -46,31 +46,33 @@ class Tangle:
             sys_metrics[client_id][LOCAL_COMPUTATIONS_KEY] = client_sys_metrics[LOCAL_COMPUTATIONS_KEY]
 
             tx.tag = rnd
-            self.new_transactions[client_id] = [tx, metrics['loss']] # this is probs training loss, maybe nor what we want to compare in query?
+            self.new_transactions.append(tx)
             
         #for tx in new_transactions:
         #    self.add_transaction(tx)
 
         return sys_metrics
 
-    def run_avalanche(self, eval_fn, clients_to_test, alpha=0.5, set_to_use='test'):
+    def run_avalanche(self, eval_fn, test_fn, clients_to_test, alpha=0.5, set_to_use='test'):
         k = len(clients_to_test)
-        n_added_tx = 0
-        for u_id in self.new_transactions:
-            tx, u_loss = self.new_transactions[u_id]            
+        
+        ref_results = self.test_model(test_fn, clients_to_test, set_to_use)
+        ref_metrics = []
+        for client_id in ref_results:
+            ref_metrics.append(ref_results[client_id])
+        
+        for tx in self.new_transactions:
             eval_params = [[client.id, client.group, client.model.flops, random.randint(0, 4294967295), client.train_data, client.eval_data, self.name, set_to_use, tx.load_weights()] for client in clients_to_test]
-            results = self.process_pool.starmap(eval_fn, eval_params) 
+            tx_results = self.process_pool.starmap(eval_fn, eval_params) 
             P = 0
-            for _, c_metrics in results:
-                c_loss = c_metrics['loss']
-                if u_loss >= c_loss:
+            for (_, tx_metric), ref_metric in zip(tx_results, ref_metrics):
+                if tx_metric['loss'] <= ref_metric['loss']:
                     P += 1
             if P >= alpha * k:
-                n_added_tx += 1
                 self.add_transaction(tx)
      
-        self.new_transactions = {}
-        return n_added_tx
+        self.new_transactions = []
+        return None
 
     def test_model(self, test_fn, clients_to_test, set_to_use='test'):
         metrics = {}

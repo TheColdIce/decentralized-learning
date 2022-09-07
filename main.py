@@ -133,7 +133,7 @@ def main():
         sys_metrics = tangle.run_nodes(train_single, server.selected_clients, i + 1,
                                        num_epochs=args.num_epochs, batch_size=args.batch_size,
                                        malicious_clients=malicious_clients, poison_type=poison_type)
-        n_added_tx = tangle.run_avalanche(eval_model, random_sample(clients, 10), set_to_use='test')
+        _ = tangle.run_avalanche(eval_model, test_single, random_sample(clients, 10), set_to_use='test')
         # norm.append(np.array(norm_this_round).mean(axis=0).tolist() if len(norm_this_round) else [])
         sys_writer_fn(i + 1, c_ids, sys_metrics, c_groups, c_num_samples)
 
@@ -210,7 +210,6 @@ def setup_clients(dataset, model=None, use_val_set=False, poison_fraction=0, poi
 
     return clients, malicious_clients
 
-
 def get_stat_writer_function(ids, groups, num_samples, args):
 
     def writer_fn(num_round, metrics, partition):
@@ -219,7 +218,6 @@ def get_stat_writer_function(ids, groups, num_samples, args):
 
     return writer_fn
 
-
 def get_sys_writer_function(args):
 
     def writer_fn(num_round, ids, metrics, groups, num_samples):
@@ -227,7 +225,6 @@ def get_sys_writer_function(args):
             num_round, ids, metrics, groups, num_samples, 'train', 'leaf/models/metrics', '{}_{}'.format('sys', args.metrics_name))
 
     return writer_fn
-
 
 def print_stats(
     num_round, tangle, clients, num_samples, args, writer, use_val_set, print_conf_matrix):
@@ -245,7 +242,6 @@ def print_stats(
         file.write('Round %d \n' % num_round)
         file.write(str(average_test_metrics) + '\n')
     return average_test_metrics
-
 
 def print_metrics(metrics, weights, num_round, prefix='', print_conf_matrix=False):
     """Prints weighted averages of the given metrics.
@@ -284,7 +280,6 @@ def print_metrics(metrics, weights, num_round, prefix='', print_conf_matrix=Fals
             np.savetxt('conf_matrix.txt', full_conf_matrix, fmt='%4u')
 
     return average_metrics
-
 
 if __name__ == '__main__':
     main()
