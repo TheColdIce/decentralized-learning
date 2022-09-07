@@ -1,0 +1,25 @@
+
+
+python3 main.py -dataset femnist -model cnn --num-rounds 200 --eval-every 20 --clients-per-round 10 --num-tips 2 --sample-size 10 --reference-avg-top 1 --target-accuracy 1.0 -lr 0.06 --poison-type NONE --poison-fraction 0.0 --poison-from 201
+Round 0 
+{'accuracy': 0.016055766494748058, 'loss': 4.12334624528536, 'consensus_round': 0.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
+Round 20 
+{'accuracy': 0.08031854822998714, 'loss': 3.692959218145926, 'consensus_round': 18.0, 'consensus_poisoning': 0.0, 'norm': 0.8459730744361877}
+Round 40 
+{'accuracy': 0.317475716767223, 'loss': 3.243490385486948, 'consensus_round': 38.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
+Round 60 
+{'accuracy': 0.41859534873645915, 'loss': 2.2485426861770175, 'consensus_round': 59.0, 'consensus_poisoning': 0.0, 'norm': 1.816955804824829}
+Round 80 
+{'accuracy': 0.43983036453299285, 'loss': 2.396021061482904, 'consensus_round': 79.0, 'consensus_poisoning': 0.0, 'norm': 1.2156295776367188}
+Round 100 
+{'accuracy': 0.5791919785353212, 'loss': 1.4617004571261847, 'consensus_round': 100.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
+Round 120 
+{'accuracy': 0.4991466303409869, 'loss': 1.975771173998076, 'consensus_round': 120.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
+Round 140 
+{'accuracy': 0.6370845557322359, 'loss': 1.2218471061196965, 'consensus_round': 138.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
+Round 160 
+{'accuracy': 0.6733411150189211, 'loss': 1.1604630387234456, 'consensus_round': 158.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
+Round 180 
+{'accuracy': 0.6545152853962993, 'loss': 1.1523441007142667, 'consensus_round': 180.0, 'consensus_poisoning': 0.0, 'norm': 1.5459043979644775}
+Round 200 
+{'accuracy': 0.6620970029577332, 'loss': 1.1130960400531216, 'consensus_round': 195.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
