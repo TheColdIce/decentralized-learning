@@ -119,3 +119,28 @@ Round 180
 {'accuracy': 0.7120229004399362, 'loss': 0.9869216276478168, 'consensus_round': 173.0, 'consensus_poisoning': 0.0, 'norm': 1.4953134059906006}
 Round 200 
 {'accuracy': 0.7075302265998084, 'loss': 1.0006802231720318, 'consensus_round': 196.0, 'consensus_poisoning': 0.0, 'norm': 1.478195071220398}
+
+
+python3 main.py -dataset femnist -model cnn --num-rounds 200 --eval-every 20 --clients-per-round 10 --num-tips 2 --sample-size 10 --reference-avg-top 1 --target-accuracy 1.0 -lr 0.06 --poison-type NONE --poison-fraction 0.0 --poison-from 201
+Round 0 
+{'accuracy': 0.016055766494748058, 'loss': 4.12334624528536, 'consensus_round': 0.0, 'consensus_poisoning': 0.0, 'norm': 0.0}
+Round 20 
+{'accuracy': 0.05400472282026346, 'loss': 3.698856887817383, 'consensus_round': 14.315949367088608, 'consensus_poisoning': 0.0, 'norm': 1.0015408313727077}
+Round 40 
+{'accuracy': 0.4617741543938976, 'loss': 2.1349151686648007, 'consensus_round': 32.41145420955397, 'consensus_poisoning': 0.0, 'norm': 1.5035110232571431}
+Round 60 
+{'accuracy': 0.552555344940344, 'loss': 1.628986179251046, 'consensus_round': 54.0, 'consensus_poisoning': 0.0, 'norm': 1.4400477409362793}
+Round 80 
+{'accuracy': 0.591575011969241, 'loss': 1.5205246015540514, 'consensus_round': 75.0, 'consensus_poisoning': 0.0, 'norm': 1.7334107160568237}
+Round 100 
+{'accuracy': 0.6613403375814432, 'loss': 1.1689845856402723, 'consensus_round': 97.0, 'consensus_poisoning': 0.0, 'norm': 1.7578539848327637}
+Round 120 
+{'accuracy': 0.6543138086456093, 'loss': 1.2426467689633345, 'consensus_round': 115.0, 'consensus_poisoning': 0.0, 'norm': 1.124951720237732}
+Round 140 
+{'accuracy': 0.7291741278353402, 'loss': 0.862860148360192, 'consensus_round': 137.0, 'consensus_poisoning': 0.0, 'norm': 1.7947007417678833}
+Round 160 
+{'accuracy': 0.7424689859018532, 'loss': 0.8970600416359392, 'consensus_round': 153.08446601941748, 'consensus_poisoning': 0.0, 'norm': 1.769092314683118}
+Round 180 
+{'accuracy': 0.7107192045034137, 'loss': 0.9507111060866589, 'consensus_round': 174.12042042042043, 'consensus_poisoning': 0.0, 'norm': 1.6499231506038357}
+Round 200 
+{'accuracy': 0.6896463329400954, 'loss': 0.9358378791372038, 'consensus_round': 192.0, 'consensus_poisoning': 0.0, 'norm': 1.0579012632369995}

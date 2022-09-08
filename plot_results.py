@@ -18,6 +18,10 @@ acc_ava_e10 = [0.016055766494748058, 0.06021819481897336, 0.4211772553082698, 0.
 # alpha = 0.5, epsilon = 0.8
 acc_ava_e08 = [0.016055766494748058, 0.10430938368642256, 0.4790637212511786, 0.5840640087981273, 0.5630985864688042, 0.6660944710764105, 0.6523477345093794, 0.6986274696830481, 0.7582048260259212, 0.7120229004399362, 0.7075302265998084]
 
+# results from avalanche-learning on 5% of data
+# alpha = 0.5, epsilon = 0.8
+acc_ava_e06 = [0.016055766494748058, 0.05400472282026346, 0.4617741543938976, 0.552555344940344, 0.591575011969241, 0.6613403375814432, 0.6543138086456093, 0.7291741278353402, 0.7424689859018532, 0.7107192045034137, 0.6896463329400954]
+
 rounds = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200]
 
 plt.title('10 nodes per round, 5 % of data')
@@ -27,6 +31,7 @@ plt.grid()
 plt.plot(rounds, acc_tan, '-o', color='C0', label='tangle-learning')
 plt.plot(rounds, acc_ava_e10, '-o', color='C1', label='avalanche-learning\n'+r'$\alpha=0.5, \epsilon=1.0$')
 plt.plot(rounds, acc_ava_e08, '-o', color='C2', label='avalanche-learning\n'+r'$\alpha=0.5, \epsilon=0.8$')
+plt.plot(rounds, acc_ava_e06, '-o', color='C3', label='avalanche-learning\n'+r'$\alpha=0.5, \epsilon=0.6$')
 plt.legend()
 
 plt.savefig('./results.png')

@@ -53,7 +53,7 @@ class Tangle:
 
         return sys_metrics
 
-    def run_avalanche(self, eval_fn, test_fn, clients_to_test, alpha=0.5, epsilon=0.8, set_to_use='test'):
+    def run_avalanche(self, eval_fn, test_fn, clients_to_test, alpha=0.5, epsilon=0.6, set_to_use='test'):
         k = len(clients_to_test)
         
         ref_results = self.test_model(test_fn, clients_to_test, set_to_use)
